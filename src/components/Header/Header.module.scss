@@ -1,0 +1,113 @@
+@use "../../styles/variables" as *;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 60px;
+    padding-right: 60px;
+    font-size: 14px;
+}
+
+.header__nav {
+    display: flex;
+    gap: 49px;
+}
+
+.header__right {
+    display: flex;
+    align-items: center;
+}
+
+.auth {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+}
+
+.auth__divider {
+    width: 2px;
+    height: 26px;
+    background-color: $color-primary
+}
+
+.transparentText {
+    opacity: $transparent-text;
+    letter-spacing: 1%;
+}
+
+.auth__login {
+    padding: 5px 12px;
+    border-radius: $border-radius-btn;
+    color: $color-text;
+    background-color: $color-accent-light-blue;
+    font-weight: 500;
+}
+
+.auth__logout {
+    display: grid;
+    grid-template-areas: "username avatar"
+        "logout avatar";
+    gap: 4px;
+}
+
+.auth__username {
+    grid-area: username;
+    opacity: 70%;
+}
+
+.auth__avatar {
+    grid-area: avatar;
+}
+
+.auth__logoutBtn {
+    grid-area: logout;
+    font-size: 10px;
+    opacity: $transparent-text;
+    text-align: end;
+}
+
+.limitPanel {
+    position: absolute;
+    // right: 239px;
+    right: 20%;
+    // padding: 15px 10px;
+    border-radius: $border-radius-btn;
+    background-color: #D9D9D9;
+    // opacity: $transparent-text;
+    font-size: 10px;
+    width: 175px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+.limitPanel__loader {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #ccc;
+    border-top-color: #00bcd4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.limitPanel__green {
+    color: #8AC540;
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 100%;
+}
+
+.limitPanel__black {
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 100%;
+}

@@ -1,0 +1,25 @@
+@use "../../../styles/variables.scss" as *;
+
+.btnWrapper {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+
+    .showMoreBtn {
+        padding: 16px 50px;
+        font-weight: 500;
+        font-size: 22px;
+        background-color: $color-accent-blue;
+        color: #fff;
+        transition: background-color 0.3s ease;
+
+        &:hover:not(:disabled) {
+            background-color: #2c6fe0;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+}

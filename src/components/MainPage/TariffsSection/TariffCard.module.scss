@@ -1,0 +1,146 @@
+@use "../../../styles/variables.scss" as *;
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    width: 415px;
+    height: 540px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+    &.orange {
+        border: 2px solid $color-accent-orange;
+    }
+
+    &.blue {
+        border: 2px solid $color-accent-light-blue;
+    }
+
+    &.black {
+        border: 2px solid $color-text;
+    }
+
+    .header {
+        padding: 30px 30px 34px;
+
+        &.orange {
+            background-color: $color-accent-orange;
+        }
+
+        &.blue {
+            background-color: $color-accent-light-blue;
+        }
+
+        &.black {
+            background-color: $color-text;
+            color: #fff;
+        }
+
+        .title {
+            margin-bottom: 10px;
+            font-size: 30px;
+            font-weight: 500;
+        }
+    }
+
+    .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 30px 15px 24px 30px;
+    }
+
+    // .mainContent {
+    //     flex: 1;
+    //     display: flex;
+    //     flex-direction: column;
+    // }
+
+    .current {
+        position: absolute;
+        top: 144px;
+        left: 271px;
+        display: inline-block;
+        align-self: end;
+        font-size: 14px;
+        padding: 4px 13px;
+        border-radius: 10px;
+        background-color: #3BA5E0;
+        color: white;
+    }
+
+    .priceBlock {
+        margin-top: 10px;
+        margin-bottom: 59px;
+
+        .price {
+            margin-right: 19px;
+            font-size: 30px;
+            font-weight: 500;
+        }
+
+        .oldPrice {
+            font-size: 25px;
+            font-weight: 500;
+            opacity: 50%;
+            text-decoration: line-through;
+        }
+
+        .installment {
+            margin-top: 10px;
+        }
+    }
+
+    .featuresBlock {
+        margin-bottom: 55px;
+
+        .title {
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 5px;
+            font-size: 18px;
+            font-weight: 400;
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 20px;
+                height: 20px;
+                background-image: url("/images/MainPage/TariffsSection/check-mark.svg");
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+        }
+    }
+
+    .button {
+        width: 100%;
+        padding: 18px;
+        border-radius: $border-radius-btn;
+        font-size: 20px;
+
+        &.currentBtn {
+            background-color: #D2D2D2;
+            color: #000;
+        }
+
+        &.default {
+            background-color: $color-accent-blue;
+            color: #fff;
+        }
+    }
+
+}

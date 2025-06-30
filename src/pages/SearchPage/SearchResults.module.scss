@@ -1,0 +1,43 @@
+@use "../../styles/variables.scss" as *;
+
+.resultsWrapper {
+
+    .topBlock {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 200px;
+
+        .title {
+            margin-bottom: 36px;
+            font-family: $font-secondary;
+            font-weight: 900;
+            font-size: 40px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+        }
+    }
+
+    .cardsWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .titleDocs {
+            margin-bottom: 58px;
+            align-self: start;
+            font-family: $font-secondary;
+            font-weight: 900;
+            font-size: 30px;
+        }
+
+        .cardsGrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 38px;
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,66 @@
+@use "./variables" as *;
+
+@font-face {
+    font-family: "Ferry";
+    src: url("/fonts/Ferry/Ferry-Black.woff2") format("woff2"),
+        url("/fonts/Ferry/Ferry-Black.woff") format("woff");
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Inter", sans-serif;
+    src: local("Inter") url("/fonts/Inter/Inter18pt-Regular.woff2") format("woff2"),
+        url("/fonts/Inter/Inter18pt-Regular.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    ;
+}
+
+@font-face {
+    font-family: "Inter", sans-serif;
+    src: local("Inter") url("/fonts/Inter/Inter18pt-Regular.woff2") format("woff2"),
+        url("/fonts/Inter/Inter18pt-Regular.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: $font-main;
+    font-size: $font-size-base;
+    font-weight: $font-weight-base;
+    background-color: $color-background;
+    color: $color-text;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    // max-width: 100%;
+    display: block;
+}

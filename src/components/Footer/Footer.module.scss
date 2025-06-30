@@ -1,0 +1,29 @@
+@use "../../styles/variables.scss" as *;
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 60px;
+    padding-right: 60px;
+    background-color: $color-primary;
+
+    .right {
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: center;
+        // align-items: center;
+        text-align: right;
+        color: #fff;
+
+        p {
+            font-size: 14px;
+            margin: 4px 0;
+        }
+
+        .copyrightText {
+            margin-top: 21px;
+            font-size: 12px;
+        }
+    }
+}

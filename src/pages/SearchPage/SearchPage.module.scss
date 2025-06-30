@@ -1,0 +1,45 @@
+.searchSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 69px 50px;
+
+    .left {
+        max-width: 65vw;
+
+        .title {
+            margin-bottom: 25px;
+            font-family: "Ferry";
+            font-weight: 900;
+            font-size: 40px;
+        }
+
+        .subtitle {
+            margin-bottom: 47px;
+            font-size: 20px;
+        }
+    }
+
+    .right {
+
+        .documentImg {
+            position: absolute;
+            top: 15%;
+            left: 68%;
+        }
+
+        .foldersImg {
+            position: absolute;
+            top: 17%;
+            left: 85%;
+        }
+
+        .rocketImg {
+            position: absolute;
+            top: 37%;
+            left: 70%;
+        }
+
+    }
+}

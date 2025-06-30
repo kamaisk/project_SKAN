@@ -1,0 +1,67 @@
+@use "../../../styles/variables.scss" as *;
+
+.carouselWrapper {
+    margin-bottom: 107px;
+
+    .title {
+        margin-bottom: 17px;
+        font-family: "Ferry";
+        font-weight: 900;
+        font-size: 30px;
+    }
+
+    .subtitle {
+        margin-bottom: 27px;
+        color: #949494;
+    }
+
+    .carousel {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .navBtn {
+
+        &:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+    }
+
+    .table {
+        display: flex;
+        flex-direction: column;
+        border: 2px solid $color-primary;
+        border-radius: 10px;
+        overflow: hidden;
+        flex: 1;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .headerCell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 140px;
+        padding: 10px;
+        background-color: $color-primary;
+        color: #fff;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    .cell {
+        width: 140px;
+        padding: 10px;
+        border-right: 2px solid #949494;
+        text-align: center;
+
+        &:last-child {
+            border-right: none;
+        }
+    }
+}
