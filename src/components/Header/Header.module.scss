@@ -70,12 +70,9 @@
 
 .limitPanel {
     position: absolute;
-    // right: 239px;
-    right: 20%;
-    // padding: 15px 10px;
+    right: 15%;
     border-radius: $border-radius-btn;
     background-color: #D9D9D9;
-    // opacity: $transparent-text;
     font-size: 10px;
     width: 175px;
     padding-top: 15px;
@@ -110,4 +107,22 @@
     font-size: 14px;
     font-weight: 700;
     opacity: 100%;
+}
+
+@media (max-width: 1023px) {
+    .header {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .limitPanel {
+        right: 5%;
+        top: 10%;
+    }
+}
+
+@media (max-width: 767px) {
+    .header__nav {
+        display: none;
+    }
 }

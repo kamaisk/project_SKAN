@@ -4,6 +4,7 @@ import styles from "./SearchPage.module.scss";
 import SearchResults from "./SearchResults";
 
 const SearchPage: React.FC = () => {
+    // const [histogramData, setHistogramData] = useState<any | null>(null);
     const [showResults, setShowResults] = useState(false);
     const [searchParams, setSearchParams] = useState<SearchFormData | null>(null);
 

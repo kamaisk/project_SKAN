@@ -1,7 +1,6 @@
 @use "../../../styles/variables.scss" as *;
 
 .whyWe {
-    // text-align: center;
 
     h2 {
         font-family: "Ferry";
@@ -9,34 +8,66 @@
         font-size: 45px;
         margin-bottom: 70px;
     }
+}
 
-    .carousel {
+.carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.arrow {
+    cursor: pointer;
+}
+
+.cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.card {
+    min-height: 225px;
+    padding: 30px 20px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.05);
+
+    img {
+        width: 64px;
+        margin-bottom: 19px;
+    }
+}
+
+@media (max-width: 1023px) {
+    .card {
+        p {
+            font-size: 16px;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .whyWe {
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 32px;
+            // max-width: 274px;
+        }
+    }
+
+    .cardsContainer {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+    }
 
-        .arrow {
-            cursor: pointer;
-        }
-
-        .cardsContainer {
-            display: flex;
-            gap: 30px;
-        }
-
-        .card {
-            // flex: 0 0 400px;
-            height: 225px;
-            width: 400px;
-            padding: 30px 20px;
-            border-radius: 10px;
-            box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.05);
-
-            img {
-                width: 64px;
-                margin-bottom: 19px;
-            }
-        }
+    .card {
+        flex: 0 0 auto;
+        height: auto;
+        width: 100%;
+        max-width: 300px;
+        scroll-snap-align: start;
     }
 }

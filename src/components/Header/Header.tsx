@@ -1,25 +1,14 @@
-import { useEffect, useState } from "react"
 import styles from "./Header.module.scss"
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import CompanyLimitPanel from "./CompanyLimitPanel";
 import AuthPanel from "./AuthPanel";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [limitData, setLimitData] = useState<{ used: number; limit: number } | null>(null);
-    const [loadingLimit, setLoadingLimit] = useState(false);
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            setLoadingLimit(true);
-            // имитация запроса
-            setTimeout(() => {
-                setLimitData({ used: 34, limit: 100 });
-                setLoadingLimit(false)
-            }, 3000)
-        }
-    }, [isAuthenticated]);
+    const { isAuthenticated, logout, user } = useAuth();
+    const navigate = useNavigate();
 
     return (
         <header className={styles.header}>
@@ -27,20 +16,20 @@ const Header: React.FC = () => {
             <NavLinks />
 
             <div className={styles.header__right}>
-                {isAuthenticated ? (
+                {isAuthenticated && user ? (
                     <>
-                        <CompanyLimitPanel loading={loadingLimit} data={limitData} />
+                        <CompanyLimitPanel
+                            loading={false}
+                            data={{ limit: user.companyLimit, used: user.usedCompanyCount }}
+                        />
                         <AuthPanel
                             isAuthenticated={true}
-                            user={{ name: "Алексей А.", avatar: "/images/header-avatar.svg" }}
-                            onLogout={() => {
-                                setIsAuthenticated(false);
-                                setLimitData(null)
-                            }}
+                            user={user ?? undefined}
+                            onLogout={logout}
                         />
                     </>
                 ) : (
-                    <AuthPanel isAuthenticated={false} onLogin={() => setIsAuthenticated(true)} />
+                    <AuthPanel isAuthenticated={false} onLogin={() => navigate("/login")} />
                 )}
             </div>
         </header>

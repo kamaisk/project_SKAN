@@ -5,13 +5,18 @@ import PublicationCard from "../../components/SearchPage/PublicationCard/Publica
 import styles from "./SearchResults.module.scss";
 import ShowMoreButton from "../../components/SearchPage/ShowMoreButton/ShowMoreButton";
 import type { SearchFormData } from "./SearchForm";
+import { useAuth } from "../../context/AuthContext";
+import { getHistogramData, type HistogramData } from "../../api/histograms";
+import { ObjectSearch } from "../../api/objectsearch";
 
 interface Props {
     formData: SearchFormData;
 }
 
 const SearchResults: React.FC<Props> = ({ formData }) => {
+    const { token } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
+    const [histogramData, setHistogramData] = useState<HistogramData[] | null>(null);
     const [visibleCount, setVisibleCount] = useState(10);
 
     const totalPublications = 20;
@@ -31,9 +36,58 @@ const SearchResults: React.FC<Props> = ({ formData }) => {
     }));
 
     useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 2000);
-        return () => clearTimeout(timer)
-    }, [])
+        const fetchHistogramAndDocuments = async () => {
+            try {
+                if (!token) return;
+
+                const requestBody = {
+                    intervalType: "month" as const,
+                    histogramTypes: ["totalDocuments", "riskFactors"] as ("totalDocuments" | "riskFactors")[],
+                    issueDateInterval: {
+                        startDate: formData.startDate,
+                        endDate: formData.endDate,
+                    },
+                    searchContext: {
+                        targetSearchEntities: [
+                            {
+                                type: "company" as const,
+                                sparkId: null,
+                                entityId: null,
+                                inn: Number(formData.inn),
+                                maxFullness: formData.maxFullness,
+                                inBusinessNews: formData.businessContext || null,
+                            }
+                        ],
+                        onlyMainRole: formData.mainRole,
+                        onlyWithRiskFactors: formData.riskFactors,
+                        tonality: formData.tonality as "any" | "negative" | "positive",
+                    },
+                    similarMode: "duplicates" as const,
+                    limit: 1000,
+                    sortType: "sourceInfluence" as const,
+                    sortDirectionType: "desc" as const,
+                    attributeFilters: {
+                        excludeTechNews: !formData.techNews,
+                        excludeAnnouncements: !formData.announcements,
+                        excludeDigests: !formData.digests,
+                    },
+                };
+
+                const histogramData = await getHistogramData(requestBody, token);
+                console.log("Histogram API response", histogramData);
+                setHistogramData(histogramData);
+
+                const documentIdsResponse = await ObjectSearch(requestBody, token);
+                console.log("Найдено ID публикаций", documentIdsResponse.items);
+            } catch (error) {
+                console.error("Ошибка получения гистограммы", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchHistogramAndDocuments();
+    }, [formData, token]);
 
     const visiblePublications = publications.slice(0, visibleCount);
 
@@ -51,7 +105,7 @@ const SearchResults: React.FC<Props> = ({ formData }) => {
                 <Loader />
             ) : (
                 <>
-                    <HistogramCarousel totalPublications={publications.length} />
+                    <HistogramCarousel data={histogramData} />
 
                     <div className={styles.cardsWrapper}>
                         <h2 className={styles.titleDocs}>Список документов</h2>

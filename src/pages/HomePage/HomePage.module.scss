@@ -4,4 +4,25 @@
     padding: 24px 60px 118px;
     margin: 0 auto;
     gap: 80px;
+
+    .imageWrapper {
+        img {
+            width: -webkit-fill-available;
+        }
+    }
 }
+
+@media (max-width: 1023px) {
+    .main {
+        padding: 24px 40px 118px;
+    }
+}
+
+@media (max-width: 767px) {
+    .main {
+        padding: 20px 14px 43px;
+        gap: 50px;
+    }
+}
+
+@media (max-width: 375px) {}

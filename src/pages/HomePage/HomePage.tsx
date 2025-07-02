@@ -1,6 +1,7 @@
 import HeroSection from "../../components/MainPage/HeroSection/HeroSection";
 import TariffSection from "../../components/MainPage/TariffsSection/TariffSection";
 import WhyWeSection from "../../components/MainPage/WhyWeSection/WhyWeSection";
+import { useAuth } from "../../context/AuthContext";
 import styles from "./HomePage.module.scss";
 
 export const HomePage: React.FC = () => {
