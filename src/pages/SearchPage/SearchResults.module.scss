@@ -1,43 +1,88 @@
 @use "../../styles/variables.scss" as *;
 
-.resultsWrapper {
+.topBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 100px;
+
+    .title {
+        margin-bottom: 36px;
+        font-family: $font-secondary;
+        font-weight: 900;
+        font-size: 40px;
+    }
+
+    .subtitle {
+        font-size: 20px;
+    }
+}
+
+.cardsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .titleDocs {
+        margin-bottom: 58px;
+        align-self: start;
+        font-family: $font-secondary;
+        font-weight: 900;
+        font-size: 30px;
+    }
+
+    .cardsGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 38px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 1023px) {
+    .topBlock {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .resultsWrapper {
+        padding: 20px;
+    }
 
     .topBlock {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 200px;
+        flex-direction: column;
+        gap: 20px;
+        align-items: start;
 
         .title {
-            margin-bottom: 36px;
-            font-family: $font-secondary;
-            font-weight: 900;
-            font-size: 40px;
+            margin-bottom: 19px;
+            font-size: 28px;
         }
 
         .subtitle {
-            font-size: 20px;
+            font-size: 18px;
+        }
+
+        .searchResultsImg {
+            max-width: 100%;
+            height: auto;
+            align-self: center;
         }
     }
 
     .cardsWrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
         .titleDocs {
-            margin-bottom: 58px;
-            align-self: start;
-            font-family: $font-secondary;
-            font-weight: 900;
-            font-size: 30px;
+            margin-bottom: 34px;
+            font-size: 28px;
         }
 
         .cardsGrid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 38px;
-            width: 100%;
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
     }
 }

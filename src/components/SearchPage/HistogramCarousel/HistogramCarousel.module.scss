@@ -2,66 +2,115 @@
 
 .carouselWrapper {
     margin-bottom: 107px;
+}
 
-    .title {
-        margin-bottom: 17px;
-        font-family: "Ferry";
-        font-weight: 900;
-        font-size: 30px;
+.title {
+    margin-bottom: 17px;
+    font-family: "Ferry";
+    font-weight: 900;
+    font-size: 30px;
+}
+
+.subtitle {
+    margin-bottom: 27px;
+    color: #949494;
+}
+
+.carousel {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.navBtn {
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
     }
+}
 
-    .subtitle {
-        margin-bottom: 27px;
-        color: #949494;
+.table {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid $color-primary;
+    border-radius: 10px;
+    // overflow: hidden;
+    // flex: 1;
+}
+
+.row {
+    display: flex;
+}
+
+.headerCell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    padding: 10px;
+    background-color: $color-primary;
+    color: #fff;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.cell {
+    width: 140px;
+    padding: 10px;
+    border-right: 2px solid #949494;
+    text-align: center;
+
+    &:last-child {
+        border-right: none;
     }
+}
 
+@media (max-width: 1023px) {
     .carousel {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .navBtn {
-
-        &:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
+        justify-content: center;
+        align-items: stretch;
     }
 
     .table {
-        display: flex;
-        flex-direction: column;
-        border: 2px solid $color-primary;
-        border-radius: 10px;
-        overflow: hidden;
-        flex: 1;
+        margin: 0;
+        width: auto;
+    }
+
+    .headerCell,
+    .cell {
+        width: 80px;
+        padding: 5px;
+    }
+}
+
+@media (max-width: 767px) {
+    .carouselWrapper {
+        margin-bottom: 60px;
+    }
+
+    .title {
+        margin-bottom: 10px;
+        font-size: 28px;
     }
 
     .row {
-        display: flex;
+        min-width: 250px;
+        // flex-direction: column;
+    }
+
+    .headerCell,
+    .cell {
+        width: 100%;
+        text-align: center;
+        padding: 5px;
     }
 
     .headerCell {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 140px;
-        padding: 10px;
-        background-color: $color-primary;
-        color: #fff;
-        font-weight: 500;
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .cell {
-        width: 140px;
-        padding: 10px;
-        border-right: 2px solid #949494;
-        text-align: center;
-
-        &:last-child {
-            border-right: none;
-        }
+        font-size: 16px;
     }
 }

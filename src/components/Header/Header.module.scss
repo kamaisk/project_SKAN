@@ -7,6 +7,7 @@
     padding-left: 60px;
     padding-right: 60px;
     font-size: 14px;
+    position: relative;
 }
 
 .header__nav {
@@ -17,6 +18,21 @@
 .header__right {
     display: flex;
     align-items: center;
+}
+
+.burgerBtn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+}
+
+.burgerBtn__line {
+    width: 100%;
+    height: 5px;
+    background-color: $color-primary;
+    transition: 0.3s;
 }
 
 .auth {
@@ -109,6 +125,38 @@
     opacity: 100%;
 }
 
+.mobileMenuOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: end;
+}
+
+.mobileMenu {
+    width: 280px;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 30px;
+    background-color: #fff;
+
+    .header__nav {
+        a {
+            display: block;
+            padding: 20px 0;
+            font-size: 18px;
+        }
+    }
+}
+
 @media (max-width: 1023px) {
     .header {
         padding-left: 40px;
@@ -117,12 +165,60 @@
 
     .limitPanel {
         right: 5%;
-        top: 10%;
+        top: 80%;
     }
 }
 
 @media (max-width: 767px) {
+    .header {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .header__logo {
+        img {
+            width: 120px;
+            height: auto;
+        }
+    }
+
     .header__nav {
         display: none;
+    }
+
+    .burgerBtn {
+        display: flex;
+    }
+
+    .auth {
+        display: none;
+    }
+
+    .auth__logout {
+        display: none;
+    }
+
+    .limitPanel {
+        right: 25%;
+        top: 20%;
+        font-size: 8px;
+        width: auto;
+        padding: 10px;
+
+    }
+
+    .mobileMenu {
+        .header__nav {
+            display: block;
+        }
+
+        .auth {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .auth__logout {
+            display: block;
+        }
     }
 }

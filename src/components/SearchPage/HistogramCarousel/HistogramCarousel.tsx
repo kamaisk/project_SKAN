@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./HistogramCarousel.module.scss";
 import type { HistogramData } from "../../../api/histograms";
 
@@ -14,7 +14,19 @@ interface Props {
 
 const HistogramCarousel: React.FC<Props> = ({ data }) => {
     const [startIndex, setStartIndex] = useState(0);
-    const visibleCount = 8;
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 767);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    // const [visibleCount, setVisibleCount] = useState(8);
+    // const isMobile = window.innerWidth <= 767;
+    const visibleCount = isMobile ? 1 : 8;
     const endIndex = startIndex + visibleCount;
 
     const combinedData: HistogramItem[] = useMemo(() => {
@@ -42,7 +54,6 @@ const HistogramCarousel: React.FC<Props> = ({ data }) => {
         }));
     }, [data]);
 
-    if (!Array.isArray(data) || combinedData.length === 0) return null;
 
     const handlePrev = () => {
         setStartIndex((prev) => Math.max(0, prev - 1))
@@ -53,6 +64,14 @@ const HistogramCarousel: React.FC<Props> = ({ data }) => {
     }
 
     const visibleItems = combinedData.slice(startIndex, endIndex);
+
+    useEffect(() => {
+        if (startIndex > combinedData.length - visibleCount) {
+            setStartIndex(0);
+        }
+    }, [visibleCount, combinedData.length, startIndex])
+
+    if (!Array.isArray(data) || combinedData.length === 0) return null;
 
     return (
         <div className={styles.carouselWrapper}>

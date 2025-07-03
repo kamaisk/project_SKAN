@@ -48,13 +48,13 @@ const AuthPage: React.FC = () => {
                 </div>
 
                 <div className={styles.formWrapper}>
-                    <div className={styles.form}>
+                    <div>
                         <div className={styles.tabs}>
                             <button className={`${styles.tab} ${styles.active}`}>Войти</button>
                             <button className={styles.tab}>Зарегистрироваться</button>
                         </div>
 
-                        <form onSubmit={handleSubmit}>
+                        <form className={styles.form} onSubmit={handleSubmit}>
                             <label htmlFor="login">Логин или номер телефона:</label>
                             <input
                                 id="login"

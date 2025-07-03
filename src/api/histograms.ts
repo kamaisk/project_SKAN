@@ -17,7 +17,7 @@ interface TargetSearchEntitiesContext {
     tonality: "any" | "negative" | "positive";
 }
 
-interface HistogramRequest {
+export interface HistogramRequest {
     intervalType: "day" | "week" | "month" | "quarter" | "year";
     histogramTypes: ("totalDocuments" | "riskFactors")[];
     issueDateInterval: {

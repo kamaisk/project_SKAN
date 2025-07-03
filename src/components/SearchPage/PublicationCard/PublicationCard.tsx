@@ -1,24 +1,10 @@
+import type { DocumentOk } from "../../../api/documents";
 import styles from "./PublicationCard.module.scss";
-
-interface Publication {
-    id: string;
-    date: string;
-    source: string;
-    sourceLink: string;
-    title: string;
-    content: string;
-    attributes: {
-        isTechNews: boolean;
-        isAnnouncement: boolean;
-        isDigest: boolean;
-        wordCount: number;
-    };
-}
+import he from "he";
 
 interface Props {
-    publication: Publication;
+    publication: DocumentOk;
 }
-
 const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("ru-RU");
 
@@ -28,28 +14,28 @@ const getWordSuffix = (n: number) => {
     return "слов"
 }
 
-const PublicationCard: React.FC<Props> = ({ publication }) => {
-    const { date, source, sourceLink, title, content, attributes } = publication;
-    const tags = [
-        attributes.isTechNews && "Технические новости",
-        attributes.isTechNews && "Анонсы и события",
-        attributes.isTechNews && "Сводки новостей",
-    ].filter(Boolean) as string[];
+const stripTags = (markup: string) => {
+    const decoded = he.decode(markup);
+    return decoded.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+}
 
-    // if (attributes.isTechNews) tags.push("Технические новости");
-    // if (attributes.isAnnouncement) tags.push("Анонсы и события");
-    // if (attributes.isDigest) tags.push("Сводки новостей");
+const PublicationCard: React.FC<Props> = ({ publication }) => {
+    const { issueDate, url, source, title, content, attributes } = publication;
+    const tags: string[] = [];
+    if (attributes.isTechNews) tags.push("Технические новости");
+    if (attributes.isAnnouncement) tags.push("Анонсы и события");
+    if (attributes.isDigest) tags.push("Сводки новостей");
 
     return (
         <article className={styles.card}>
             <div className={styles.header}>
-                <span className={styles.date}>{formatDate(date)}</span>
-                <a href={sourceLink} target="_blank" rel="noopener noreferrer" className={styles.source}>
-                    {source}
+                <span className={styles.date}>{formatDate(issueDate)}</span>
+                <a href={url} target="_blank" rel="noopener noreferrer" className={styles.source}>
+                    {source.name}
                 </a>
             </div>
 
-            <h3 className={styles.title}>{title}</h3>
+            <h3 className={styles.title}>{title.text}</h3>
 
             <div className={styles.tags}>
                 {tags.map((tag, index) => (
@@ -57,11 +43,12 @@ const PublicationCard: React.FC<Props> = ({ publication }) => {
                 ))}
             </div>
 
-            {/* <div className={styles.content}>{content}</div> */}
-            <div className={styles.content} dangerouslySetInnerHTML={{ __html: content }}></div>
+            {/* <div className={styles.content}>{(content.markup).slice(0, 300)}</div> */}
+            <div className={styles.content}>{stripTags(content.markup).slice(0, 500)}</div>
+            {/* <div className={styles.content} dangerouslySetInnerHTML={{ __html: content.markup }}></div> */}
 
             <div className={styles.footer}>
-                <a href={sourceLink} target="_blank" rel="noopener noreferrer" className={styles.readBtn}>
+                <a href={url} target="_blank" rel="noopener noreferrer" className={styles.readBtn}>
                     Читать в источнике
                 </a>
                 <span className={styles.wordCount}>{attributes.wordCount} {getWordSuffix(attributes.wordCount)}</span>

@@ -4,7 +4,7 @@ import { BASE_URL } from "./login";
 //     ids: string[];
 // }
 
-interface DocumentOk {
+export interface DocumentOk {
     schemaVersion: string;
     id: string;
     version: number;
