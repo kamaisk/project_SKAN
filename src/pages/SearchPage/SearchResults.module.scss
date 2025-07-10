@@ -39,6 +39,13 @@
     }
 }
 
+.error {
+    margin: 50px 0;
+    color: red;
+    font-size: 16px;
+    text-align: center;
+}
+
 @media (max-width: 1023px) {
     .topBlock {
         flex-direction: column;

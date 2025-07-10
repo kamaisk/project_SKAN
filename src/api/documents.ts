@@ -1,8 +1,4 @@
-import { BASE_URL } from "./login";
-
-// interface DocumentRequest {
-//     ids: string[];
-// }
+import { createApiRequest } from "../utils/apiRequest";
 
 export interface DocumentOk {
     schemaVersion: string;
@@ -46,21 +42,6 @@ export type DocumentResponseItem =
     | { ok: DocumentOk }
     | { fail: DocumentFail };
 
-export const getDocumentByIds = async (ids: string[], accessToken: string): Promise<DocumentResponseItem[]> => {
-    const response = await fetch(`${BASE_URL}/documents`, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ ids }),
-    });
-
-    if (!response.ok) {
-        throw new Error("Ошибка при получении документов");
-    }
-
-    return await response.json();
-
+export const getDocumentByIds = async (ids: string[], accessToken: string) => {
+    return createApiRequest<DocumentResponseItem[]>("/documents", "POST", accessToken, { ids });
 }

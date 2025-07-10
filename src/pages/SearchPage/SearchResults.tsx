@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "../../components/Loader/Loader";
 import HistogramCarousel from "../../components/SearchPage/HistogramCarousel/HistogramCarousel";
 import PublicationCard from "../../components/SearchPage/PublicationCard/PublicationCard";
@@ -14,9 +14,10 @@ interface Props {
     formData: SearchFormData;
 }
 
-const SearchResults: React.FC<Props> = ({ formData }) => {
+const SearchResults: React.FC<Props> = React.memo(({ formData }) => {
     const { token } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [histogramData, setHistogramData] = useState<HistogramData[] | null>(null);
     const [publications, setPublications] = useState<DocumentOk[]>([]);
     const [visibleCount, setVisibleCount] = useState(10);
@@ -51,7 +52,7 @@ const SearchResults: React.FC<Props> = ({ formData }) => {
                         }
                     },
                     similarMode: "duplicates",
-                    limit: Number(formData.numberDocuments),
+                    limit: Number(formData.documentCount),
                     sortType: "sourceInfluence",
                     sortDirectionType: "desc",
                     attributeFilters: {
@@ -63,7 +64,7 @@ const SearchResults: React.FC<Props> = ({ formData }) => {
 
                 const histogramData = await getHistogramData(requestBody, token);
                 console.log("Данные по гистограмме", histogramData);
-                setHistogramData(histogramData);
+                setHistogramData(histogramData.data);
 
                 const idResponse = await ObjectSearch(requestBody, token);
                 const ids = idResponse.items.map((item) => item.encodedId);
@@ -85,6 +86,7 @@ const SearchResults: React.FC<Props> = ({ formData }) => {
 
             } catch (error) {
                 console.error("Ошибка при получении данных", error);
+                setError("Не удалось загрузить данные. Попробуйте позже");
             } finally {
                 setIsLoading(false);
             }
@@ -107,6 +109,8 @@ const SearchResults: React.FC<Props> = ({ formData }) => {
 
             {isLoading ? (
                 <Loader />
+            ) : error ? (
+                <p className={styles.error}>{error}</p>
             ) : (
                 <>
                     <HistogramCarousel data={histogramData} />
@@ -124,9 +128,10 @@ const SearchResults: React.FC<Props> = ({ formData }) => {
                         <ShowMoreButton onClick={() => setVisibleCount(visibleCount + 10)} />
                     )}
                 </>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
-}
+});
 
 export default SearchResults;

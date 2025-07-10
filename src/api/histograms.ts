@@ -1,4 +1,4 @@
-import { BASE_URL } from "./login";
+import { createApiRequest } from "../utils/apiRequest";
 
 // Запрос для получения сводки по количеству публикаций на конкретные даты.
 interface TargetSearchEntity {
@@ -48,26 +48,10 @@ export interface HistogramData {
     histogramType: "totalDocuments" | "riskFactors";
 }
 
-export const getHistogramData = async (body: HistogramRequest, accessToken: string): Promise<HistogramData[]> => {
-    const response = await fetch(`${BASE_URL}/objectsearch/histograms`, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(body),
-    });
+interface HistogramApiResponse {
+    data: HistogramData[];
+}
 
-    if (!response.ok) {
-        throw new Error("Ошибка при получении сводки публикаций");
-    }
-
-    const json = await response.json();
-
-    if (!Array.isArray(json.data)) {
-        throw new Error("Некорректный формат данных");
-    }
-
-    return json.data;
+export const getHistogramData = async (body: HistogramRequest, accessToken: string): Promise<HistogramApiResponse> => {
+    return createApiRequest<HistogramApiResponse>("/objectsearch/histograms", "POST", accessToken, body);
 }

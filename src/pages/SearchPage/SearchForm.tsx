@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./SearchForm.module.scss";
+import { validateDateRange } from "../../utils/validators";
 
 export interface SearchFormData {
     inn: string;
     tonality: string;
-    numberDocuments: string;
+    documentCount: string;
     startDate: string;
     endDate: string;
     maxFullness: boolean;
@@ -23,7 +24,7 @@ interface Props {
 const initialForm: SearchFormData = {
     inn: "",
     tonality: "",
-    numberDocuments: "",
+    documentCount: "",
     startDate: "",
     endDate: "",
     maxFullness: false,
@@ -35,17 +36,17 @@ const initialForm: SearchFormData = {
     digests: false,
 };
 
-const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
-    const [form, setForm] = useState<SearchFormData>(initialForm);
+const SearchForm: React.FC<Props> = React.memo(({ onSearchSubmit }) => {
+    const [searchFormData, setSearchFormData] = useState<SearchFormData>(initialForm);
     const [errors, setErrors] = useState({
         inn: "",
-        numberDocuments: "",
+        documentCount: "",
         dates: "",
     });
     const [isValid, setIsValid] = useState(false);
     const [touched, setTouched] = useState({
         inn: false,
-        numberDocuments: false,
+        documentCount: false,
         startDate: false,
         endDate: false,
     })
@@ -53,44 +54,34 @@ const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
     useEffect(() => {
         const newErrors = {
             inn: "",
-            numberDocuments: "",
+            documentCount: "",
             dates: "",
         };
 
         //проверка ИНН
-        if (!/^\d{10}$/.test(form.inn)) {
+        if (!/^\d{10}$/.test(searchFormData.inn)) {
             newErrors.inn = "Введите корректные данные"
         }
 
         //проверка количества документов
-        const num = Number(form.numberDocuments);
+        const num = Number(searchFormData.documentCount);
         if (!num || num < 1 || num > 1000) {
-            newErrors.numberDocuments = "Введите от 1 до 1000"
+            newErrors.documentCount = "Введите от 1 до 1000"
         }
 
         //проверка дат
-        const start = new Date(form.startDate);
-        const end = new Date(form.endDate);
-        const now = new Date();
-        if (!form.startDate || !form.endDate || isNaN(start.getTime()) || isNaN(end.getTime())) {
-            newErrors.dates = "Введите корректные диапазон дат";
-        } else if (start > end) {
-            newErrors.dates = "Дата начала не может быть позже даты конца";
-        } else if (start > now || end > now) {
-            newErrors.dates = "Даты не могут быть в будущем";
-        }
+        newErrors.dates = validateDateRange(searchFormData.startDate, searchFormData.endDate) || "";
 
         setErrors(newErrors);
 
-        // const noErrors = Boolean(newErrors.inn === "" && newErrors.numberDocuments === "" && newErrors.dates === "");
-        const noErrors = !newErrors.inn && !newErrors.numberDocuments && !newErrors.dates;
-        const allRequiredFilled = form.inn && form.tonality && form.numberDocuments && form.startDate && form.endDate;
+        const noErrors = !newErrors.inn && !newErrors.documentCount && !newErrors.dates;
+        const allRequiredFilled = searchFormData.inn && searchFormData.tonality && searchFormData.documentCount && searchFormData.startDate && searchFormData.endDate;
         setIsValid(noErrors && Boolean(allRequiredFilled));
-    }, [form])
+    }, [searchFormData])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = event.target;
-        setForm((prev) => ({
+        setSearchFormData((prev) => ({
             ...prev,
             [name]: type === "checkbox" ? (event.target as HTMLInputElement).checked : value
         }))
@@ -99,9 +90,9 @@ const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isValid) {
-            onSearchSubmit(form);
+            onSearchSubmit(searchFormData);
         }
-        console.log("Запрос отправлен с данными:", form)
+        console.log("Запрос отправлен с данными:", searchFormData)
     }
 
     return (
@@ -117,7 +108,7 @@ const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
                         id="inn"
                         name="inn"
                         placeholder="10 цифр"
-                        value={form.inn}
+                        value={searchFormData.inn}
                         onChange={handleChange}
                         onBlur={() => setTouched(prev => ({ ...prev, inn: true }))}
                         className={errors.inn && touched.inn ? styles.inputError : ""}
@@ -132,7 +123,7 @@ const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
                     <select
                         id="tonality"
                         name="tonality"
-                        value={form.tonality}
+                        value={searchFormData.tonality}
                         onChange={handleChange}
                     >
                         <option value="">Выберите тональность</option>
@@ -143,20 +134,20 @@ const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
                 </div>
 
                 <div className={styles.inputBlock}>
-                    <label htmlFor="numberDocuments">
+                    <label htmlFor="documentCount">
                         Количество документов в выдаче <span className={styles.required}>*</span>
                     </label>
                     <input
                         type="number"
-                        id="numberDocuments"
-                        name="numberDocuments"
+                        id="documentCount"
+                        name="documentCount"
                         placeholder="от 1 до 1000"
-                        value={form.numberDocuments}
+                        value={searchFormData.documentCount}
                         onChange={handleChange}
-                        onBlur={() => setTouched(prev => ({ ...prev, numberDocuments: true }))}
-                        className={errors.numberDocuments && touched.numberDocuments ? styles.inputError : ""}
+                        onBlur={() => setTouched(prev => ({ ...prev, documentCount: true }))}
+                        className={errors.documentCount && touched.documentCount ? styles.inputError : ""}
                     />
-                    {errors.numberDocuments && touched.numberDocuments && <span className={styles.errorText}>{errors.numberDocuments}</span>}
+                    {errors.documentCount && touched.documentCount && <span className={styles.errorText}>{errors.documentCount}</span>}
                 </div>
 
                 <div className={styles.dateBlock}>
@@ -170,7 +161,7 @@ const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
                                 id="startDate"
                                 name="startDate"
                                 placeholder="Дата начала"
-                                value={form.startDate}
+                                value={searchFormData.startDate}
                                 onChange={handleChange}
                                 onBlur={() => setTouched(prev => ({ ...prev, startDate: true }))}
                                 className={errors.dates && touched.startDate ? styles.inputError : ""}
@@ -186,7 +177,7 @@ const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
                                 id="endDate"
                                 name="endDate"
                                 placeholder="Дата конца"
-                                value={form.endDate}
+                                value={searchFormData.endDate}
                                 onChange={handleChange}
                                 onBlur={() => setTouched(prev => ({ ...prev, endDate: true }))}
                                 className={errors.dates && touched.endDate ? styles.inputError : ""}
@@ -198,71 +189,71 @@ const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
             </div>
 
             <div className={styles.rightBlock}>
-                <label className={`${styles.checkbox} ${!form.maxFullness ? styles.inactive : ""}`}>
+                <label className={`${styles.checkbox} ${!searchFormData.maxFullness ? styles.inactive : ""}`}>
                     <input
                         type="checkbox"
                         name="maxFullness"
-                        checked={form.maxFullness}
+                        checked={searchFormData.maxFullness}
                         onChange={handleChange}
                     />
                     Признак максимальной полноты
                 </label>
 
-                <label className={`${styles.checkbox} ${!form.businessContext ? styles.inactive : ""}`}>
+                <label className={`${styles.checkbox} ${!searchFormData.businessContext ? styles.inactive : ""}`}>
                     <input
                         type="checkbox"
                         name="businessContext"
-                        checked={form.businessContext}
+                        checked={searchFormData.businessContext}
                         onChange={handleChange}
                     />
                     Упоминания в бизнес-контексте
                 </label>
 
-                <label className={`${styles.checkbox} ${!form.mainRole ? styles.inactive : ""}`}>
+                <label className={`${styles.checkbox} ${!searchFormData.mainRole ? styles.inactive : ""}`}>
                     <input
                         type="checkbox"
                         name="mainRole"
-                        checked={form.mainRole}
+                        checked={searchFormData.mainRole}
                         onChange={handleChange}
                     />
                     Главная роль в публикации
                 </label>
 
-                <label className={`${styles.checkbox} ${!form.riskFactors ? styles.inactive : ""}`}>
+                <label className={`${styles.checkbox} ${!searchFormData.riskFactors ? styles.inactive : ""}`}>
                     <input
                         type="checkbox"
                         name="riskFactors"
-                        checked={form.riskFactors}
+                        checked={searchFormData.riskFactors}
                         onChange={handleChange}
                     />
                     Публикации только с риск-факторами
                 </label>
 
-                <label className={`${styles.checkbox} ${!form.techNews ? styles.inactive : ""}`}>
+                <label className={`${styles.checkbox} ${!searchFormData.techNews ? styles.inactive : ""}`}>
                     <input
                         type="checkbox"
                         name="techNews"
-                        checked={form.techNews}
+                        checked={searchFormData.techNews}
                         onChange={handleChange}
                     />
                     Включать технические новости рынков
                 </label>
 
-                <label className={`${styles.checkbox} ${!form.announcements ? styles.inactive : ""}`}>
+                <label className={`${styles.checkbox} ${!searchFormData.announcements ? styles.inactive : ""}`}>
                     <input
                         type="checkbox"
                         name="announcements"
-                        checked={form.announcements}
+                        checked={searchFormData.announcements}
                         onChange={handleChange}
                     />
                     Включать анонсы и календари
                 </label>
 
-                <label className={`${styles.checkbox} ${!form.digests ? styles.inactive : ""}`}>
+                <label className={`${styles.checkbox} ${!searchFormData.digests ? styles.inactive : ""}`}>
                     <input
                         type="checkbox"
                         name="digests"
-                        checked={form.digests}
+                        checked={searchFormData.digests}
                         onChange={handleChange}
                     />
                     Включать сводки новостей
@@ -278,6 +269,6 @@ const SearchForm: React.FC<Props> = ({ onSearchSubmit }) => {
             </div>
         </form>
     )
-}
+});
 
 export default SearchForm

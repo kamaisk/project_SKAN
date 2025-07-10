@@ -1,4 +1,4 @@
-import { BASE_URL } from "./login";
+import { createApiRequest } from "../utils/apiRequest";
 
 //Запрос для получения информации об аккаунте пользователя.
 interface UserInfo {
@@ -8,19 +8,6 @@ interface UserInfo {
     };
 }
 
-export const getUserInfo = async (accessToken: string): Promise<UserInfo> => {
-    const response = await fetch(`${BASE_URL}/account/info`, {
-        method: "GET",
-        headers: {
-            "Content-type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error("Ошибка при получении информации о пользователе")
-    }
-
-    return response.json();
+export const getUserInfo = async (accessToken: string) => {
+    return createApiRequest<UserInfo>("/account/info", "GET", accessToken);
 }

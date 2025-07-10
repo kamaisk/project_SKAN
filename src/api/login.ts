@@ -1,4 +1,4 @@
-export const BASE_URL = "https://gateway.scan-interfax.ru/api/v1";
+import { BASE_URL } from "../config";
 
 //Запрос для авторизации пользователя.
 export interface LoginRequest {
@@ -27,4 +27,3 @@ export const loginUser = async (credentials: LoginRequest): Promise<LoginRespons
 
     return response.json();
 }
-

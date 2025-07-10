@@ -1,4 +1,4 @@
-import { BASE_URL } from "./login";
+import { createApiRequest } from "../utils/apiRequest";
 
 interface TargetSearchEntity {
     type: "company" | "suggestedPersons";
@@ -47,20 +47,6 @@ interface SearchResponse {
     items: SearchResultItem[];
 }
 
-export const ObjectSearch = async (body: SearchRequest, accessToken: string): Promise<SearchResponse> => {
-    const response = await fetch(`${BASE_URL}/objectsearch`, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(body),
-    });
-
-    if (!response.ok) {
-        throw new Error("Ошибка при поиске публикаций");
-    }
-
-    return response.json();
+export const ObjectSearch = async (body: SearchRequest, accessToken: string) => {
+    return createApiRequest<SearchResponse>("/objectsearch", "POST", accessToken, body)
 }

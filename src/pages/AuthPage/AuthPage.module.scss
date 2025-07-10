@@ -122,6 +122,13 @@
     color: $color-accent-blue;
 }
 
+.error {
+    margin-bottom: 20px;
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
 .socials {
 
     .socialIcons {
@@ -132,6 +139,8 @@
         gap: 10px;
     }
 }
+
+
 
 @media (max-width: 1023px) {
     .container {
